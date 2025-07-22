@@ -1,7 +1,8 @@
+import 'dotenv/config';
 import app from '../app.ts';
-import type { Contact } from '../types/contact.types.ts'; // ✅ Importa o tipo
+import type { Contact } from '../types/contact.types.ts';
 
-const baseUrl = 'http://localhost'
+const baseUrl = process.env.BASE_URL ?? 'http://localhost:3001';
 
 describe('Contacts API via fetch handler', () => {
   let createdContactId: number | undefined;
@@ -21,9 +22,11 @@ describe('Contacts API via fetch handler', () => {
 
   it('deve criar um novo contato', async () => {
     const url = `${baseUrl}/contacts`;
+
+    const uniqueSuffix = Date.now();
     const newContact = {
-      name: "Anderson Silva",
-      email: "anderson3.silva@example.com",
+      name: `Anderson Silva ${uniqueSuffix}`,
+      email: `anderson${uniqueSuffix}@example.com`,
       company: "Tech Solutions Ltda",
       phone: "+55 11 91234-5678"
     };
@@ -37,7 +40,7 @@ describe('Contacts API via fetch handler', () => {
     const res = await app.fetch(req);
     expect(res.status).toBe(201);
 
-    const data = await res.json() as Contact; 
+    const data = await res.json() as Contact;
     expect(data).toHaveProperty('id');
     expect(data.name).toBe(newContact.name);
 
@@ -52,7 +55,7 @@ describe('Contacts API via fetch handler', () => {
     const res = await app.fetch(req);
     expect(res.status).toBe(200);
 
-    const data = await res.json() as Contact; 
+    const data = await res.json() as Contact;
     expect(data).toHaveProperty('id', id);
     expect(data).toHaveProperty('name');
   });
@@ -71,17 +74,20 @@ describe('Contacts API via fetch handler', () => {
     const res = await app.fetch(req);
     expect(res.status).toBe(200);
 
-    const data = await res.json() as Contact; 
+    const data = await res.json() as Contact;
     expect(data).toHaveProperty('phone', updateData.phone);
   });
 
   it('deve excluir um contato pelo ID', async () => {
     const id = createdContactId ?? 4;
-    const url = `http://localhost/contacts/${id}`;
+    const url = `${baseUrl}/contacts/${id}`;
 
     const req = new Request(url, { method: 'DELETE' });
     const res = await app.fetch(req);
 
     expect([200, 204]).toContain(res.status);
+    
+    const res2 = await app.fetch(req);
+    expect(res2.status).toBe(404);
   });
 });
