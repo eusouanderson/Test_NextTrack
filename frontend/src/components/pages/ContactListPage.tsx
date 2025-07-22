@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Contact } from '@/types/contact';
 import { api } from '@/lib/api';
+import { useCallback } from 'react';
 
 export default function ContactManager() {
   // Estados para gerenciamento de contatos
@@ -21,25 +22,30 @@ export default function ContactManager() {
     phone: '',
   });
 
-  const fetchContacts = async (page: number) => {
-    setIsLoading(true);
-    setError(null);
-    
-    try {
-      const res = await api.get(`/contacts?page=${page}&limit=${limit}`);
-      setContacts(res.data.data ?? res.data);
-      setTotal(res.data.total ?? 0);
-    } catch (err) {
-      setError('Erro ao carregar contatos. Tente novamente mais tarde.');
-      console.error('Erro ao buscar contatos:', err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  
+
+const fetchContacts = useCallback(async (page: number) => {
+  setIsLoading(true);
+  setError(null);
+
+  try {
+    const res = await api.get(`/contacts?page=${page}&limit=${limit}`);
+    setContacts(res.data.data ?? res.data);
+    setTotal(res.data.total ?? 0);
+  } catch (err) {
+    setError('Erro ao carregar contatos. Tente novamente mais tarde.');
+    console.error('Erro ao buscar contatos:', err);
+  } finally {
+    setIsLoading(false);
+  }
+}, [limit, setContacts, setError, setIsLoading, setTotal]);
+
 
   useEffect(() => {
-    fetchContacts(page);
-  }, [page]);
+  fetchContacts(page);
+}, [fetchContacts, page]);
+
+
 
   const openCreateModal = () => {
     setEditingContact(null);
