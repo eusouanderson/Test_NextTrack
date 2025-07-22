@@ -1,0 +1,34 @@
+@baseUrl = http://localhost:3000
+
+### Listar contatos (com paginação opcional)
+GET {{baseUrl}}/contacts?page=1&limit=10
+
+### Obter detalhes de um contato pelo ID
+GET {{baseUrl}}/contacts/1
+
+### Criar um novo contato
+POST {{baseUrl}}/contacts
+Content-Type: application/json
+
+{
+  "name": "Anderson Silva",
+  "email": "anderson3.silva@example.com",
+  "company": "Tech Solutions Ltda",
+  "phone": "+55 11 91234-5678"
+}
+
+### Atualizar parcialmente um contato pelo ID
+PATCH {{baseUrl}}/contacts/1
+Content-Type: application/json
+
+{
+  "phone": "+55 11 98765-4321"
+}
+
+### Excluir um contato pelo ID
+DELETE {{baseUrl}}/contacts/4
+
+
+### Openai 
+
+GET {{baseUrl}}/docs
