@@ -1,4 +1,6 @@
-export default function RootLayout({ children }) {
+import React, { ReactNode } from 'react';
+
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="pt-BR">
       <body className="bg-gray-50 min-h-screen font-sans text-gray-900">
