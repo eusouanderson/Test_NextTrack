@@ -1,110 +1,110 @@
+'use client';
 
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useState, FormEvent } from 'react';
 import { Contact } from '@/types/contact';
-import { api } from '@/lib/api';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-
-const contactSchema = z.object({
-  name: z.string().min(3, 'Nome deve ter pelo menos 3 letras'),
-  email: z.string().email('E-mail inválido'),
-  phone: z.string().min(8, 'Telefone obrigatório'),
-  company: z.string().optional(),
-});
-
-type ContactFormData = z.infer<typeof contactSchema>;
+import FormGroup from '../molecules/FormGroup';
+import Button from '../atoms/Button';
 
 interface ContactFormProps {
-  contact?: Contact;
+  initialData?: Omit<Contact, 'id'>;
+  onSubmit: (formData: Omit<Contact, 'id'>) => Promise<void>;
+  onCancel: () => void;
+  isLoading: boolean;
+  isEdit?: boolean;
+  error?: string | null;
 }
 
-export function ContactForm({ contact }: ContactFormProps) {
-  const router = useRouter();
-  const [submitting, setSubmitting] = useState(false);
+export default function ContactForm({
+  initialData = { name: '', email: '', company: '', phone: '' },
+  onSubmit,
+  onCancel,
+  isLoading,
+  isEdit = false,
+  error = null,
+}: ContactFormProps) {
+  const [formData, setFormData] = useState(initialData);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ContactFormData>({
-    resolver: zodResolver(contactSchema),
-    defaultValues: contact ?? {},
-  });
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
 
-  async function onSubmit(data: ContactFormData) {
-    setSubmitting(true);
-    if (contact) {
-      await api.patch(`/contacts/${contact.id}`, data);
-    } else {
-      await api.post('/contacts', data);
-    }
-    router.push('/contacts');
-  }
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    await onSubmit(formData);
+  };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="bg-white shadow-lg rounded-xl p-8 max-w-xl mx-auto mt-10 space-y-6 animate-fade-in"
-    >
-      <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-        {contact ? 'Editar Contato' : 'Novo Contato'}
-      </h2>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {error && (
+        <div className="p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded">
+          <p className="font-medium">{error}</p>
+        </div>
+      )}
 
-      {/* Nome */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Nome</label>
-        <input
-          {...register('name')}
-          className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-            errors.name ? 'border-red-500' : 'border-gray-300'
-          }`}
-        />
-        {errors.name && <p className="text-sm text-red-600 mt-1">{errors.name.message}</p>}
+      <FormGroup
+        id="name"
+        label="Nome Completo"
+        name="name"
+        type="text"
+        value={formData.name}
+        onChange={handleInputChange}
+        required
+      />
+
+      <FormGroup
+        id="email"
+        label="Email"
+        name="email"
+        type="email"
+        value={formData.email}
+        onChange={handleInputChange}
+        required
+      />
+
+      <FormGroup
+        id="company"
+        label="Empresa"
+        name="company"
+        type="text"
+        value={formData.company}
+        onChange={handleInputChange}
+      />
+
+      <FormGroup
+        id="phone"
+        label="Telefone"
+        name="phone"
+        type="tel"
+        value={formData.phone || ''}
+        onChange={handleInputChange}
+      />
+
+      <div className="flex justify-end space-x-3 pt-4">
+        <Button
+          type="button"
+          onClick={onCancel}
+          disabled={isLoading}
+          variant="secondary"
+        >
+          Cancelar
+        </Button>
+        <Button
+          type="submit"
+          disabled={isLoading}
+          variant="primary"
+        >
+          {isLoading ? (
+            <span className="flex items-center">
+              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              {isEdit ? 'Atualizando...' : 'Salvando...'}
+            </span>
+          ) : isEdit ? 'Atualizar' : 'Salvar'}
+        </Button>
       </div>
-
-      {/* Email */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-        <input
-          {...register('email')}
-          className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-            errors.email ? 'border-red-500' : 'border-gray-300'
-          }`}
-        />
-        {errors.email && <p className="text-sm text-red-600 mt-1">{errors.email.message}</p>}
-      </div>
-
-      {/* Telefone */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Telefone</label>
-        <input
-          {...register('phone')}
-          className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-            errors.phone ? 'border-red-500' : 'border-gray-300'
-          }`}
-        />
-        {errors.phone && <p className="text-sm text-red-600 mt-1">{errors.phone.message}</p>}
-      </div>
-
-      {/* Empresa */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Empresa</label>
-        <input
-          {...register('company')}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
-
-      {/* Botão */}
-      <button
-        type="submit"
-        disabled={submitting}
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200 disabled:opacity-60"
-      >
-        {submitting ? 'Salvando...' : contact ? 'Atualizar Contato' : 'Criar Contato'}
-      </button>
     </form>
   );
 }

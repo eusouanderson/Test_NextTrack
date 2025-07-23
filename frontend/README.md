@@ -1,72 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Frontend — NextTrack CRM: Módulo de Gestão de Contatos
 
-## Getting Started
+Este projeto frontend é uma aplicação moderna para gestão de contatos, desenvolvida com foco em alta produtividade, escalabilidade e qualidade de código.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🧩 Tecnologias Utilizadas
+
+- **Next.js**  
+  Framework React com renderização híbrida (SSR, SSG) e roteamento otimizado.
+- **TypeScript**  
+  Tipagem estática para maior robustez e manutenibilidade.
+- **Styled-Components**  
+  CSS-in-JS para estilização dinâmica, modular e tema Dark/Light.
+- **Arquitetura Atomic Design**  
+  Organização de componentes em átomos, moléculas, organismos, templates e páginas para máxima reutilização e clareza.
+- **Axios**  
+  Cliente HTTP para consumo da API REST de contatos com facilidade e controle.
+- **Storybook**  
+  Ambiente isolado para desenvolvimento e documentação de componentes UI.
+
+---
+
+## 🎯 Objetivo do Projeto
+
+Desenvolver um módulo de gestão de “Contatos” integrado ao sistema NextTrack CRM que permita:
+
+- Listagem paginada de contatos
+- Visualização detalhada
+- Criação, edição parcial e exclusão
+- Validação e feedbacks UX/UI consistentes
+
+---
+
+## 🗂 Estrutura do Projeto
+
+```http
+src/
+├── components/
+│ ├── atoms/
+│ ├── molecules/
+│ ├── organisms/
+│ ├── templates/
+│ └── pages/
+├── hooks/
+├── services/
+├── styles/
+├── stories/ # Componentes para Storybook
+└── utils/
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## 🚀 Como Rodar o Projeto
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+### Pré-requisitos
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+- Node.js v18+
+- Yarn ou npm
+- API backend NextTrack CRM rodando (ex: http://localhost:3000)
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Passos
 
-## Learn More
+## 🚀 Como Rodar o Projeto
 
-To learn more about Next.js, take a look at the following resources:
+### Pré-requisitos
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+- Node.js v18+
+- pnpm instalado globalmente (`npm i -g pnpm`)
+- API backend NextTrack CRM rodando (ex: http://localhost:3000)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Passos
 
-## Deploy on Vercel
+```bash
+# Instalar dependências
+pnpm install
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Build
+pnpm build
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+# Rodar ambiente de desenvolvimento
+pnpm dev
 
-eusouanderson:~/Projetos/Test_NextTrack/frontend (main\*)$ tree -I 'node_modules'
-.
-├── eslint.config.mjs
-├── next.config.ts
-├── next-env.d.ts
-├── package.json
-├── package-lock.json
-├── pnpm-lock.yaml
-├── postcss.config.mjs
-├── public
-│ ├── favicon.ico
-│ ├── file.svg
-│ ├── globe.svg
-│ ├── next.svg
-│ ├── vercel.svg
-│ └── window.svg
-├── README.md
-├── src
-│ ├── lib
-│ │ └── api.ts
-│ ├── pages
-│ │ ├── api
-│ │ ├── \_app.tsx
-│ │ ├── \_document.tsx
-│ │ └── index.tsx
-│ └── styles
-│ └── globals.css
-└── tsconfig.json
+# Rodar ambiente de produção
+pnpm start
 
-7 directories, 20 files
-eusouanderson:~/Projetos/Test_NextTrack/frontend (main\*)$
+```

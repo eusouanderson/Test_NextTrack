@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import nextappsImg from '@/styles/assets/images/nextapps.png';
 import ContactListPage from '@/components/pages/ContactListPage';
+import ContactManager from '@/components/pages/ContactManager';
 
 export default function Home() {
   return (
@@ -21,7 +22,7 @@ export default function Home() {
       />
 
       <div className="w-full max-w-5xl px-4">
-        <ContactListPage />
+        <ContactManager />
       </div>
     </div>
   );

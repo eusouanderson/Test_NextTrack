@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:3000
+@baseUrl = http://localhost:3001
 
 ### Listar contatos (com paginação opcional)
 GET {{baseUrl}}/contacts?page=1&limit=10
@@ -26,9 +26,9 @@ Content-Type: application/json
 }
 
 ### Excluir um contato pelo ID
-DELETE {{baseUrl}}/contacts/4
+DELETE {{baseUrl}}/contacts/14
 
 
 ### Openai 
 
-GET {{baseUrl}}/docs
+GET {{baseUrl}}/docs/openai
