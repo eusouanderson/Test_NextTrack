@@ -21,6 +21,9 @@ importers:
         specifier: ^4.0.5
         version: 4.0.5
     devDependencies:
+      '@eslint/js':
+        specifier: ^9.31.0
+        version: 9.31.0
       '@types/bun':
         specifier: ^1.2.19
         version: 1.2.19(@types/react@19.1.8)
