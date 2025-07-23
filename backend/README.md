@@ -44,7 +44,7 @@ src/
 ### 1. Clonar e instalar dependências
 
 ```bash
-git clone https://github.com/seu-usuario/contact-api.git
+git clone https://github.com/eusouanderson/Test_NextTrack.git
 ```
 
 ```bash
@@ -213,3 +213,5 @@ GET /docs/openai
 - **Swagger UI**
 - **PostgreSQL** (em Docker)
 - **Bun** (runtime) ⚠️ **Importante:** certifique-se de ter o Bun instalado para rodar o projeto.
+
+Ex:

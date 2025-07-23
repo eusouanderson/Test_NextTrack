@@ -1,7 +1,7 @@
 @baseUrl = http://localhost:3001
 
 ### Listar contatos (com paginação opcional)
-GET {{baseUrl}}/contacts?page=1&limit=10
+GET {{baseUrl}}/contacts?page=1&limit=2
 
 ### Obter detalhes de um contato pelo ID
 GET {{baseUrl}}/contacts/1
